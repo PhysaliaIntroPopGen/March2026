@@ -1,7 +1,7 @@
 # Physalia-course: Population genomics
 Thibault Leroy (thibault.leroy@inrae.fr)
 
-## Part 1: BioinformaticsMarch 16, 2026 
+## Part 1: Bioinformatics - March 16, 2026 
 
 ### General context
 The analysis workflow, which includes quality control (QC) of raw sequencing data, trimming, mapping to the reference genome, QC of the mapping results, and PCR deduplication, is universally applicable across various sequencing approaches. These approaches include Pool-Seq, individual sequencing with low coverage, and moderate coverage sequencing strategies. While the downstream analysis beyond SNP calling may differ depending on the experimental design and objectives, the initial steps remain consistent and form the foundation for high-quality data processing. 
@@ -99,9 +99,7 @@ cd ~/Day1_bioinfo/data-oak/Raw-data/
 for j in ERR3284869 ERR3284873 ERR3284898; do
 		 acc=$(echo "./$j")
 		 outacc=$(echo "../Trimming/$j")
-		 trimmomatic PE -threads 1 -phred33 "$acc"_1.subset.fastq.gz "$acc"_2.subset.fastq.gz "$outacc"_1.cleaned.subset.fastq.gz "$outacc"_1.cleaned_unpaired.subset.fastq.gz "$outacc"_2.cleaned.subset.fastq.gz "$outacc"_2.cleaned_unpaired.subset.fastq.gz \
-ILLUMINACLIP:/home/ubuntu/.conda/envs/Workshop_TL_YB_Calling/share/trimmomatic/adapters/
-TruSeq3-PE-2.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:50
+		 trimmomatic PE -threads 1 -phred33 "$acc"_1.subset.fastq.gz "$acc"_2.subset.fastq.gz "$outacc"_1.cleaned.subset.fastq.gz "$outacc"_1.cleaned_unpaired.subset.fastq.gz "$outacc"_2.cleaned.subset.fastq.gz "$outacc"_2.cleaned_unpaired.subset.fastq.gz ILLUMINACLIP:/home/ubuntu/.conda/envs/Workshop_TL_YB_Calling/share/trimmomatic/adapters/TruSeq3-PE-2.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:50
 done
 Note: The script is designed to save the results in a Trimming directory. Therefore, ensure you already have a Trimming directory in the data-oak directory (normally yes, but if not, please create it with the mkdir command: "mkdir Trimming"). Additionally, remember to navigate between directories using "cd [DIRECTORY]" (e.g. cd Trimming) to enter a folder, and "cd .." to move up one level in the directory structure! 
 
@@ -193,11 +191,7 @@ Do you expect any differences if you use samtools flagstat on the BAM files afte
 Using mpileup for pool-seq data allows you to generate a compact representation of sequence data at each position across multiple pools, providing depth and allele information. It helps identify variation and detect the presence of specific alleles across different samples.	
 
 Here again, due to the constraints associated with the cluster, the commands below are only provided (PLEASE DO NOT EXECUTE THEM, A FILE IS PROVIDED BELOW: see "Oak_3pools.mpileup.first100kb"):
-samtools mpileup -f $REFERENCE_GENOME -q 20 -Q 30 \
-ERR3284869_subset_trimmedPE.bam.dedup \
-ERR3284873_subset_trimmedPE.bam.dedup \
-ERR3284898_subset_trimmedPE.bam.dedup \
- > ../Calling/Oak_3pools.mpileup
+samtools mpileup -f $REFERENCE_GENOME -q 20 -Q 30 ERR3284869_subset_trimmedPE.bam.dedup ERR3284873_subset_trimmedPE.bam.dedup ERR3284898_subset_trimmedPE.bam.dedup > ../Calling/Oak_3pools.mpileup
 Explanations: 
 -q 20 corresponds to the minimum base quality score for including bases in the mpileup 
 -Q 30 corresponds to the minimum mapping quality for including reads in the mpileup 
