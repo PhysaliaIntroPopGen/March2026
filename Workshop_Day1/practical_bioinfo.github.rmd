@@ -115,7 +115,7 @@ cd ~/Day1_bioinfo/data-oak/Trimming
 for j in ERR3284869 ERR3284873 ERR3284898; do
 	 acc=$(echo "$j")
 	 outacc=$(echo "../Mapping/$j""_subset_trimmedPE")
-	 bwa-mem2 mem \$REFERENCE_GENOME "$acc"_1.cleaned.subset.fastq.gz "$acc"_2.cleaned.subset.fastq.gz | samtools view -Sb - > $outacc.bam
+	 bwa-mem2 mem $REFERENCE_GENOME "$acc"_1.cleaned.subset.fastq.gz "$acc"_2.cleaned.subset.fastq.gz | samtools view -Sb - > $outacc.bam
 done
 Note: in this example, we will only worked on paired-end data after trimming, but it would be possible to use bwa-mem2 mem with a single fastq.file
 OPTIONAL: The example below demonstrates how to map paired-end data after trimming, while excluding single-end reads remaining after trimming (i.e. "cleaned_unpaired" reads). Identify the appropriate command-line to map these single-end reads.
