@@ -50,10 +50,12 @@ N content: The proportion of ambiguous bases (N) in the assembly, representing u
 NOTE: a contig is a continuous sequence of DNA with no gaps, assembled from overlapping reads, while a scaffold is a series of contigs ordered and oriented relative to each other, often connected by gaps (typically represented by a series of N) where the sequence is uncertain. 
 
 To evaluate the quality of a reference assembly with Assemblathon:
-export PERL5LIB=/home/ubuntu/Share/software/assemblathon2-analysis/ /home/ubuntu/Share/software/assemblathon2-analysis/assemblathon_stats.pl [reference_genome.fasta]
+export PERL5LIB=/home/ubuntu/Share/software/assemblathon2-analysis/
+/home/ubuntu/Share/software/assemblathon2-analysis/assemblathon_stats.pl [reference_genome.fasta]
 
 i.e. execute the following two commands (and wait ~1 min):
-export PERL5LIB=/home/ubuntu/Share/software/assemblathon2-analysis/ /home/ubuntu/Share/software/assemblathon2-analysis/assemblathon_stats.pl ~/Assemblies/Qrob_PM1N.fa > Qrob_PM1N.fa.assemblathon.txt 
+export PERL5LIB=/home/ubuntu/Share/software/assemblathon2-analysis/
+/home/ubuntu/Share/software/assemblathon2-analysis/assemblathon_stats.pl ~/Assemblies/Qrob_PM1N.fa > Qrob_PM1N.fa.assemblathon.txt 
 
 Based on the Assemblathon results, how long is the assembled genome? Does its total length exceed the expected genome size for this species (0.75 Gb)? Additionally, is this assembly resolved at the chromosome level? 
 
