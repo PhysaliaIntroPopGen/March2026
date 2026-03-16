@@ -54,8 +54,7 @@ export PERL5LIB=/home/ubuntu/Share/software/assemblathon2-analysis/
 /home/ubuntu/Share/software/assemblathon2-analysis/assemblathon_stats.pl [reference_genome.fasta]
 
 i.e. execute the following two commands (and wait ~1 min):
-export PERL5LIB=/home/ubuntu/Share/software/assemblathon2-analysis/
-/home/ubuntu/Share/software/assemblathon2-analysis/assemblathon_stats.pl ~/Assemblies/Qrob_PM1N.fa > Qrob_PM1N.fa.assemblathon.txt 
+export PERL5LIB=/home/ubuntu/Share/software/assemblathon2-analysis/ /home/ubuntu/Share/software/assemblathon2-analysis/assemblathon_stats.pl ~/Assemblies/Qrob_PM1N.fa > Qrob_PM1N.fa.assemblathon.txt 
 
 Based on the Assemblathon results, how long is the assembled genome? Does its total length exceed the expected genome size for this species (0.75 Gb)? Additionally, is this assembly resolved at the chromosome level? 
 
