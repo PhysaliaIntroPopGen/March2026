@@ -151,10 +151,7 @@ OPTIONAL: Try to directly map the raw data (without trimming) and compare the re
 
 Samtools idxstats is another valuable tool to have an overview of the mapping. It provides per-chromosome statistics about mapped and unmapped reads relative to the length of each scaffold in the reference assembly. The output consists of four columns: scaffold name, scaffold length, the number of mapped reads, and the number of unmapped reads. However, it’s important to note that the term "unmapped reads" in this context can be somewhat misleading - it refers to reads assigned to a chromosome but with low-confidence alignments, such as low-quality mappings or secondary alignments. By analyzing the idxstats output, researchers can assess genome coverage by dividing the number of reads by the scaffold length and identify potential issues, such as uneven coverage, due to over-represented contigs or contamination. This makes idxstats an essential step in ensuring the quality and reliability of mapped sequencing data.
 To use idxstats, execute the following command:
-for i in *.sorted; do
-	 samtools index $i
-	 samtools idxstats $i > $i.idxstats.txt
-done
+for i in *.sorted; do samtools index $i samtools idxstats $i > $i.idxstats.txt; done
 
 ### Step 7: Removing PCR duplicates
 Marking PCR duplicates is another essential step in sequencing data processing, particularly when dealing with whole-genome sequencing. PCR amplification during library preparation can introduce duplicates from the same DNA fragment, which can bias downstream analyses. By marking duplicates, reads with identical start and end positions are flagged, helping to identify likely PCR artifacts without removing them. This preserves all data for flexibility in later analyses, as some tools can decide to exclude duplicates based on the specific research goal.
