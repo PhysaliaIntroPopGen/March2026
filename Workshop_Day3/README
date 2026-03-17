@@ -1,6 +1,6 @@
 This workshop provides an introduction to demographic modelling, through different approches, including inferences of effective population sizes (smc++ & GONE), as well as the Approximate Bayesian Computation approach implemented in DILS. Main instructor: Thibault Leroy (thibault.leroy_at_inrae.fr)
 
-Note 1: The SMC++ program does NOT work on the physalia-instance. Read the code to know how you could proceed your data on your favorite computing cluster (or computer).
+Note 1: The SMC++ program does NOT work on the physalia-cours instance. Read carefully the code to know how you could proceed your data on your favorite computing cluster (or computer).
 
 Note 2: Whenever possible, please use the "practical_demo.github.rmd" file. While the PDF version is easier to read (and can definitively be used), it has certain limitations when it provides code to run. At least, if something doesn't work with the PDF version, please have a look at the associated "github.rmd" file.
 
