@@ -1,6 +1,6 @@
-Here is one or two examples, as a back-up solution, in case you can't download it from the cluster.
+Here are the result files from DILS (step 5), available here as a back-up solution, in case you were unable to download them from the cluster with scp.
 
-But, the best would be to download the whole directory on your own computer (yes, the space and the dot at the end of the command is important).
+But, the best would be to download the whole directory on your own computer (yes, the space and the dot at the end of the command are important!).
 scp -i c[XX].pem -r user[XX]@[WednesdayIPaddress]:"~/Day3_demography/data-honeybees/ABC-based_DILS/" .
 
 e.g. assuming that your are user2 and than you want to download the file in the same folder than where you have your pem file to login in:
