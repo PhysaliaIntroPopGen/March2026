@@ -1,1 +1,7 @@
+Here is one or two examples, as a back-up solution, in case you can't download it from the cluster.
 
+But, the best would be to download the whole directory on your own computer (yes, the space and the dot at the end of the command is important).
+<code>scp -i c[XX].pem -r user[XX]@[WednesdayIPaddress]:"~/Day3_demography/data-honeybees/ABC-based_DILS/" .</code>
+
+e.g. assuming that your are user2 and than you want to download the file in the same folder than where you have your pem file to login in:
+<code>scp -i c2.pem -r user2@[WednesdayIPaddress]:"~/Day3_demography/data-honeybees/ABC-based_DILS/" .</code>
