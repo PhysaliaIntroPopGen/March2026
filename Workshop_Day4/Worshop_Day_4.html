@@ -160,7 +160,10 @@ div.csl-indent {
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> DP_Data</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> DP_Data <span class="co">#to access the Data folder.</span></span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /home/ubuntu/Share/Day4_selection/DP_Data/<span class="pp">*</span> .</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">###The expected results are already stored on the cluster. You can copy them like this:</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> /home/ubuntu/Share/Day4_selection/Results_expected .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="examining-depth-of-coverage-per-individual-and-missing-data" class="level2">
@@ -272,8 +275,8 @@ div.csl-indent {
 <table class="caption-top table">
 <caption>List of common ANGSD options</caption>
 <colgroup>
-<col style="width: 30%">
-<col style="width: 69%">
+<col style="width: 50%">
+<col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -536,8 +539,8 @@ div.csl-indent {
 <table class="caption-top table">
 <caption>A quick explanation of ms syntax</caption>
 <colgroup>
-<col style="width: 30%">
-<col style="width: 69%">
+<col style="width: 50%">
+<col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -887,49 +890,54 @@ div.csl-indent {
 </section>
 <section id="genome-wide-scan-for-association-fruit-colour-in-phoenix-dactylifera" class="level2">
 <h2 class="anchored" data-anchor-id="genome-wide-scan-for-association-fruit-colour-in-phoenix-dactylifera">Genome-wide scan for association: fruit colour in <em>Phoenix dactylifera</em></h2>
-<p>What we did before was relatively simple: comparing discrete phenotypes and running a fairly basic association test. For more complex cases, you can of course use PLINK. However, there is a rather powerful alternative to run different association models in an integrated way, GAPIT: https://github.com/jiabowang/GAPIT. The only slightly difficult part is that it requires a HapMap file as an input, instead of a VCF. Given our limited time, we start directly from the HapMap file. The script will take about 5 minutes to run on the whole genome dataset.</p>
+<p>What we did before was relatively simple: comparing discrete phenotypes and running a fairly basic association test. For more complex cases, you can of course use PLINK. However, there is a powerful alternative to run different association models in an integrated way, GAPIT: <code>https://github.com/jiabowang/GAPIT</code>. The only slightly difficult part is that it requires a HapMap file as an input, instead of a VCF. Given our limited time, we start directly from the HapMap file. The script will take about 5 minutes to run on the whole genome dataset.</p>
+<p>Before running R, make sure to activate the conda environment where GAPIT is installed, like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"http://zzlab.net/GAPIT/gapit_functions.txt"</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>myY<span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">"./DP_Data/Phenotypes1.txt"</span>,<span class="at">h=</span>T)</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>myY_traits <span class="ot">&lt;-</span> myY[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">19</span>)] <span class="do">##for RAB, the statistic describing the colour of the fruit</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co">#myY_traits &lt;- myY[,c(1,30)] ##for Sex</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>myG<span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">"./DP_Data/final_gwas.snp1.8c.1.hmp.txt"</span>,<span class="at">h=</span>F) <span class="do">###We import the genotypes in HapMap format</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="do">####The commands below are filters to remove a few problematic individuals</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>myY_traits<span class="ot">=</span>myY_traits[(myY_traits<span class="sc">$</span>ID_for_GWAS <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"PDAC317_Kro_S"</span>,<span class="st">"PDAC356_Ma1_S"</span>,<span class="st">"PDAC357_Ma2_S"</span>,</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC359_Ma4_S"</span>,</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC360_Ma5_S"</span>,</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC362_Ma7_S"</span>,</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC364_Ma9_S"</span>,</span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC368_M13_S"</span>,</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC369_M14_S"</span>,</span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC371_M16_S"</span>,</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC373_M18_S"</span>,</span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC374_M19_S"</span>,</span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC375_M20_S"</span>) <span class="sc">==</span>F),]</span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>tokeep<span class="ot">=</span><span class="fu">which</span>(myG[<span class="dv">1</span>,] <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"PDAC317_Kro_S"</span>,<span class="st">"PDAC356_Ma1_S"</span>,<span class="st">"PDAC357_Ma2_S"</span>,</span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC359_Ma4_S"</span>,</span>
-<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC360_Ma5_S"</span>,</span>
-<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC362_Ma7_S"</span>,</span>
-<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC364_Ma9_S"</span>,</span>
-<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC368_M13_S"</span>,</span>
-<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC369_M14_S"</span>,</span>
-<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC371_M16_S"</span>,</span>
-<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC373_M18_S"</span>,</span>
-<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC374_M19_S"</span>,</span>
-<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC375_M20_S"</span>)<span class="sc">==</span>F)</span>
-<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a><span class="do">#########""End of filters</span></span>
-<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>myG<span class="ot">=</span>myG[,tokeep]</span>
-<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>myGAPIT <span class="ot">&lt;-</span> <span class="fu">GAPIT</span>(</span>
-<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">Y=</span>myY_traits,</span>
-<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">PCA.total=</span><span class="dv">5</span>,</span>
-<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">G=</span>myG,</span>
-<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">model=</span><span class="st">"GLM"</span>,  <span class="at">cutOff =</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate GAPIT_env</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then execute in R:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"http://zzlab.net/GAPIT/gapit_functions.txt"</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>myY<span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">"./DP_Data/Phenotypes1.txt"</span>,<span class="at">h=</span>T)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>myY_traits <span class="ot">&lt;-</span> myY[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">19</span>)] <span class="do">##for RAB, the statistic describing the colour of the fruit</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">#myY_traits &lt;- myY[,c(1,30)] ##for Sex</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>myG<span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">"./DP_Data/final_gwas.snp1.8c.1.hmp.txt"</span>,<span class="at">h=</span>F) <span class="do">###We import the genotypes in HapMap format</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="do">####The commands below are filters to remove a few problematic individuals</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>myY_traits<span class="ot">=</span>myY_traits[(myY_traits<span class="sc">$</span>ID_for_GWAS <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"PDAC317_Kro_S"</span>,<span class="st">"PDAC356_Ma1_S"</span>,<span class="st">"PDAC357_Ma2_S"</span>,</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC359_Ma4_S"</span>,</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC360_Ma5_S"</span>,</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC362_Ma7_S"</span>,</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC364_Ma9_S"</span>,</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC368_M13_S"</span>,</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC369_M14_S"</span>,</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC371_M16_S"</span>,</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC373_M18_S"</span>,</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC374_M19_S"</span>,</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC375_M20_S"</span>) <span class="sc">==</span>F),]</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>tokeep<span class="ot">=</span><span class="fu">which</span>(myG[<span class="dv">1</span>,] <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"PDAC317_Kro_S"</span>,<span class="st">"PDAC356_Ma1_S"</span>,<span class="st">"PDAC357_Ma2_S"</span>,</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC359_Ma4_S"</span>,</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC360_Ma5_S"</span>,</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC362_Ma7_S"</span>,</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC364_Ma9_S"</span>,</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC368_M13_S"</span>,</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC369_M14_S"</span>,</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC371_M16_S"</span>,</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC373_M18_S"</span>,</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC374_M19_S"</span>,</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a><span class="st">"PDAC375_M20_S"</span>)<span class="sc">==</span>F)</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a><span class="do">#########""End of filters</span></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>myG<span class="ot">=</span>myG[,tokeep]</span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>myGAPIT <span class="ot">&lt;-</span> <span class="fu">GAPIT</span>(</span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">Y=</span>myY_traits,</span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">PCA.total=</span><span class="dv">5</span>,</span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">G=</span>myG,</span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">model=</span><span class="st">"GLM"</span>,  <span class="at">cutOff =</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The results should be stored where you launched R (a lot of PDF and csv files).</p>
 <p>If you want to have a look at the genomic context, you can browse the genome used in this study here:</p>

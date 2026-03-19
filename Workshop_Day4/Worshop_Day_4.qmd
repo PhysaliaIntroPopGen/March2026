@@ -57,6 +57,8 @@ cd DP_Data #to access the Data folder.
 ln -s /home/ubuntu/Share/Day4_selection/DP_Data/* .
 cd ..
 
+###The expected results are already stored on the cluster. You can copy them like this:
+cp -r /home/ubuntu/Share/Day4_selection/Results_expected .
 ```
 
 ## Examining depth of coverage per individual and missing data
@@ -190,7 +192,7 @@ cd ..
 Admittedly, it looks barbaric. It is called ANGSD for a reason. You can take comfort in knowing that most of the filters are fine for most applications. Nevertheless, let's review the different options:
 
 | Option | Meaning |
-|----|----|
+|------------------------------------|------------------------------------|
 | -uniqueOnly | removes reads with multiple hits. |
 | -remove_bads | removes reads with a flag above 255 (not primary, failure and duplicate reads). |
 | -only_proper_pairs | Only paired reads mapping in the expected direction (forward R1, reverse R2) and not too distant are kept. |
@@ -420,7 +422,7 @@ Firstly, we will use the R script below to obtain the scaled parameters for the 
 Let's be honest, the coalescent simulator ms [@hudson2002] is not the most intuitive, but it is extremely fast, versatile, and is now part of the standard toolbox for population geneticists. You will find the manual in the Documentation folder for this workshop, but here are some pointers already.
 
 | ms Option | Meaning |
-|----|----|
+|------------------------------------|------------------------------------|
 | -t | Set value of 4 x N~0~ x u. N~0~ is the reference population. If you have several populations, you need to pick one and **scale** **everything** with it. |
 | -I npop size0 size1... | Followed by the number of populations, and the (haploid) sample size for each. |
 | -m i j M~ij~ | Sets the effective migration rate 4 x N~0~ x m~ij~ . This is not intuitive at first: m~ij~ reflects the fraction of population i that is made of j migrants each generation. Therefore it reflects migration from j towards i. |
@@ -797,7 +799,16 @@ Try to come up with a model that explains how these loci and alleles interact to
 
 ## Genome-wide scan for association: fruit colour in *Phoenix dactylifera*
 
-What we did before was relatively simple: comparing discrete phenotypes and running a fairly basic association test. For more complex cases, you can of course use PLINK. However, there is a rather powerful alternative to run different association models in an integrated way, GAPIT: https://github.com/jiabowang/GAPIT. The only slightly difficult part is that it requires a HapMap file as an input, instead of a VCF. Given our limited time, we start directly from the HapMap file. The script will take about 5 minutes to run on the whole genome dataset.
+What we did before was relatively simple: comparing discrete phenotypes and running a fairly basic association test. For more complex cases, you can of course use PLINK. However, there is a powerful alternative to run different association models in an integrated way, GAPIT: `https://github.com/jiabowang/GAPIT`. The only slightly difficult part is that it requires a HapMap file as an input, instead of a VCF. Given our limited time, we start directly from the HapMap file. The script will take about 5 minutes to run on the whole genome dataset.
+
+Before running R, make sure to activate the conda environment where GAPIT is installed, like this:
+
+```{bash}
+#| eval: false
+conda activate GAPIT_env
+```
+
+Then execute in R:
 
 ```{r}
 #| eval: false
