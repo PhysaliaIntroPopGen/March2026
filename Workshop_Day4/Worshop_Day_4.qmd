@@ -1,7 +1,25 @@
 ---
 title: "Physalia Course, Day 4: Workshop on Genome-Wide Scans of Selection and Association"
 author: "Yann Bourgeois"
-format: html
+format:
+  pdf:
+    toc: true
+    number-sections: true
+    colorlinks: true
+    include-in-header: 
+       text: |
+         \usepackage{fvextra}
+         \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+include-before-body:
+  text: |
+    \RecustomVerbatimEnvironment{verbatim}{Verbatim}{
+      showspaces = false,
+      showtabs = false,
+      breaksymbolleft={},
+      breaklines
+      % Note: setting commandchars=\\\{\} here will cause an error 
+    }
+
 editor: visual
 bibliography: references.bib
 ---
@@ -596,7 +614,14 @@ conda deactivate
 
 ```
 
-Now in R, we can use the rehh package:
+Now in R, we can use the rehh package. For this session, the package is installed in the R version found in the GAPIT environment (see also the last part of the workshop on GWAS). You first need to activate this environment (in the shell) like this:
+
+```{bash}
+#| eval: false
+conda activate GAPIT_env
+```
+
+And then in R:
 
 ```{r, results='hide', warning=FALSE}
 #| eval: false
@@ -669,6 +694,8 @@ plot(furcation,hap.names = hap.names(hh_chr1),cex.lab = 0.2)
 #
 
 ```
+
+**Think of deactivating the conda environment to start fresh for other scripts.**
 
 ### Notes and suggestions to go further
 
